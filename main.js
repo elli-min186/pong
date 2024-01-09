@@ -34,6 +34,19 @@ const rect2 = new createjs.Shape(); //right rectangle
 rect2.graphics.beginFill("white").drawRect(1280, 20, 20, 80);
 stage.addChild(rect2);
 
+let player1score = 0;
+let player2score = 0;
+
+const score1 = new createjs.Text(player1score, "50px Times New Roman", "white");
+score1.x = canvas.width/2 - 60;
+score1.y = 30;
+stage.addChild(score1);
+
+const score2 = new createjs.Text(player2score, "50px Times New Roman", "white");
+score2.x = canvas.width/2 + 30;
+score2.y = 30;
+stage.addChild(score2);
+
 const firstkeys = {
     up: false,
     down: false
