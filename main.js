@@ -4,10 +4,10 @@ const stage = new createjs.Stage(canvas);
 //Resize canvas to screen
 function resizeCanvas() {
 
-    canvas.width = window.innerWidth - 50;
+    canvas.width = window.innerWidth - 120;
     canvas.height = window.innerHeight - 199;
 
-    // console.log("Canvas width: " + canvas.width + ", height: " + canvas.height); //to know width and height on console
+    console.log("Canvas width: " + canvas.width + ", height: " + canvas.height); //to know width and height on console
 
 }
 
@@ -15,17 +15,23 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas); //do resize every time window is resized
 
 //Create a Shape DisplayObject
+const line = new createjs.Shape();
+line.graphics.setStrokeStyle(10).beginStroke("white");
+line.graphics.moveTo(canvas.width/2, 0);
+line.graphics.lineTo(canvas.width/2, canvas.height);
+stage.addChild(line);
+
+
 const circle = new createjs.Shape();
-circle.graphics.beginFill("red").drawCircle(canvas.width/2, canvas.height/2, 10);
+circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 10);
 stage.addChild(circle);
 
-
 const rect1 = new createjs.Shape(); //left rectangle
-rect1.graphics.beginFill("black").drawRect(20, 20, 20, 80)
+rect1.graphics.beginFill("white").drawRect(70, 20, 20, 80)
 stage.addChild(rect1);
 
 const rect2 = new createjs.Shape(); //right rectangle
-rect2.graphics.beginFill("black").drawRect(1380, 20, 20, 80);
+rect2.graphics.beginFill("white").drawRect(1280, 20, 20, 80);
 stage.addChild(rect2);
 
 const firstkeys = {
