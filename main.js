@@ -31,7 +31,7 @@ rect1.graphics.beginFill("white").drawRect(70, 20, 20, 80)
 stage.addChild(rect1);
 
 const rect2 = new createjs.Shape(); //right rectangle
-rect2.graphics.beginFill("white").drawRect(1280, 20, 20, 80);
+rect2.graphics.beginFill("white").drawRect(canvas.width - 70, 20, 20, 80);
 stage.addChild(rect2);
 
 let player1score = 0;
@@ -101,15 +101,29 @@ window.addEventListener("keyup", (event) => { // if key is not pressed
     }
 });
 
-function checkCollisionWithRects() {
 
-    
-}
 
 function animate() {
 
     requestAnimationFrame(animate);
     circle.x += 3;
+
+
+    //updating scores
+
+    //if circle go beyond left edge, player 2 score
+    if (circle.x <= 0) {
+        player2score++;
+        score2.text = player2score;
+        circle.x = canvas.width/2;
+    }
+
+    //if circle go beyond right edge, player 1 score
+    if (circle.x >= canvas.width/2) {
+        player1score++;
+        score1.text = player1score;
+        circle.x = 0;
+    }
 
     // rect 2
     if (secondkeys.up) {
@@ -126,6 +140,8 @@ function animate() {
     if (firstkeys.down) {
         rect1.y += 3;
     }
+
+    
 
     stage.update();
 
