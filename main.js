@@ -51,6 +51,7 @@ stage.addChild(line);
 
 const circle = new createjs.Shape();
 circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 10);
+circle.setBounds(canvas.width/2, canvas.height/2, 10, 10);
 stage.addChild(circle);
 
 const rect1 = new createjs.Shape(); //left rectangle
@@ -148,10 +149,22 @@ function checkRectsCollisionWithBorder() {
     }
 }
 
+function checkCollision(shape1, shape2) {
+    let hitBoxOf1 = new createjs.Shape();
+    hitBoxOf1.setBounds(shape1.x + shape1.getBounds().x, shape1.y + shape1.getBounds().y, shape1.getBounds().width, shape1.getBounds().height);
+    let hitBoxOf2 = new createjs.Shape()
+    hitBoxOf2.setBounds(shape2.x + shape2.getBounds().x, shape2.y + shape2.getBounds().y, shape2.getBounds().width, shape2.getBounds().height);
+
+    return hitBoxOf1.getBounds().intersects(hitBoxOf2.getBounds());
+
+}
+
 function animate() {
     requestAnimationFrame(animate);
     circle.x += 3;
-
+    if (rect2 && circle) {
+        checkCollision(rect2, circle);
+    }
 
     //updating scores
 
