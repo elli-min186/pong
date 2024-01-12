@@ -14,6 +14,33 @@ function resizeCanvas() {
 resizeCanvas(); 
 window.addEventListener("resize", resizeCanvas); //do resize every time window is resized
 
+// //background for start page
+// const background = new createjs.Shape();
+// background.graphics.beginFill("black").drawRect(0, 0, canvas.width, canvas.height);
+// stage.addChild(background);
+
+// // start button
+// const startButton = new createjs.Shape();
+// startButton.graphics.setStrokeStyle(2).beginStroke("blue").beginFill("white").drawRoundRect(canvas.width/2 - 60, canvas.height/2 - 25, 120, 50, 10);
+// stage.addChild(startButton);
+
+// const buttonText = new createjs.Text("Start", "24px Arial", "blue");
+// buttonText.textAlign = "center";
+// buttonText.x = startButton.x + 60;
+// buttonText.y = startButton.y + 15;
+// stage.addChild(buttonText);
+
+// function startGame() {
+//     stage.removeChild(startButton);
+//     stage.removeChild(buttonText);
+//     stage.removeChild(background);
+//     gameStarted = true;
+
+//     requestAnimationFrame(animate);
+// }
+
+// startButton.addEventListener("click", startGame);
+
 //Create a Shape DisplayObject
 const line = new createjs.Shape();
 line.graphics.setStrokeStyle(10).beginStroke("white");
@@ -27,11 +54,13 @@ circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 1
 stage.addChild(circle);
 
 const rect1 = new createjs.Shape(); //left rectangle
-rect1.graphics.beginFill("white").drawRect(70, 20, 20, 80)
+rect1.graphics.beginFill("white").drawRect(70, 20, 20, 80);
+rect1.setBounds(70, 20, 20, 80);
 stage.addChild(rect1);
 
 const rect2 = new createjs.Shape(); //right rectangle
 rect2.graphics.beginFill("white").drawRect(canvas.width - 70, 20, 20, 80);
+rect2.setBounds(canvas.width - 70, 20, 20, 80);
 stage.addChild(rect2);
 
 let player1score = 0;
@@ -101,10 +130,25 @@ window.addEventListener("keyup", (event) => { // if key is not pressed
     }
 });
 
+function checkRectsCollisionWithBorder() {
+    // rect 1 collision border check
+    if (rect1.y + rect1.getBounds().y <= 0) {
+        rect1.y = -rect1.getBounds().y;
+    }
+    else if (rect1.y + rect1.getBounds().y + rect1.getBounds().height >= canvas.height) {
+        rect1.y = canvas.height - rect1.getBounds().height - rect1.getBounds().y;
+    }
 
+    // rect 2 collision border check
+    if (rect2.y + rect2.getBounds().y <= 0) {
+        rect2.y = -rect2.getBounds().y;
+    }
+    else if (rect2.y + rect2.getBounds().y + rect2.getBounds().height >= canvas.height) {
+        rect2.y = canvas.height - rect2.getBounds().height - rect2.getBounds().y;
+    }
+}
 
 function animate() {
-
     requestAnimationFrame(animate);
     circle.x += 3;
 
@@ -141,11 +185,11 @@ function animate() {
         rect1.y += 3;
     }
 
-    
+    checkRectsCollisionWithBorder(); 
+    // when function is called, the screen froze
 
     stage.update();
 
 }
 
 requestAnimationFrame(animate);
-
