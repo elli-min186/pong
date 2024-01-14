@@ -20,6 +20,18 @@ function resizeCanvas() {
 
 }
 
+function getRandomInt(max) {
+
+    return Math.floor(Math.random() * max);
+
+}
+
+function getRandomDirection() {
+
+    return getRandomInt(2) === 0 ? -1 : 1;
+
+}
+
 resizeCanvas(); 
 window.addEventListener("resize", resizeCanvas); //do resize every time window is resized
 
@@ -34,7 +46,8 @@ stage.addChild(line);
 const circle = new createjs.Shape();
 const CIRCLE_SPEED_X = 3;
 const CIRCLE_SPEED_Y = 3;
-let circleVX = -CIRCLE_SPEED_X;
+let initDirection = getRandomDirection();
+let circleVX = CIRCLE_SPEED_X * initDirection;
 let circleVY = 0;
 circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 10);
 circle.setBounds(canvas.width/2, canvas.height/2, 10, 10);
@@ -174,7 +187,7 @@ function isNumberValuePlusMinusEpsilon(number, value, epsilon) {
 function resetCircle() {
 
     circle.x = canvas.width/2 - circle.getBounds().x;
-    circleVX = CIRCLE_SPEED_X;
+    circleVX = CIRCLE_SPEED_X * getRandomDirection();
     circleVY = 0;
 
 }
