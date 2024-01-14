@@ -145,6 +145,16 @@ function checkCollision(shape1, shape2) {
 
 }
 
+function checkAndApplyBorderCollision(circle) {
+
+    if (circle.y + circle.getBounds().y > canvas.height) {
+        circleVY = -CIRCLE_SPEED_Y;
+    } else if (circle.y + circle.getBounds().y < 0) {
+        circleVY = CIRCLE_SPEED_Y;
+    }
+
+}
+
 function midPoint(shape) {
 
     let bounds = shape.getBounds();
@@ -247,6 +257,8 @@ function animate() {
     } else if (checkCollision(circle, rect2)) {
         applyCollision(circle, rect2);
     }
+
+    checkAndApplyBorderCollision(circle);
 
     //updating scores
 
