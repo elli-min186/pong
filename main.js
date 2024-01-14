@@ -1,6 +1,15 @@
 const canvas = document.getElementById("canvas");
 const stage = new createjs.Stage(canvas);
 
+const DIRECTION_NORTH = "NORTH";
+const DIRECTION_NORTH_EAST = "NORTH_EAST";
+const DIRECTION_EAST = "EAST";
+const DIRECTION_SOUTH_EAST = "SOUTH_EAST";
+const DIRECTION_SOUTH = "SOUTH";
+const DIRECTION_SOUTH_WEST = "SOUTH_WEST";
+const DIRECTION_WEST = "WEST";
+const DIRECTION_NORTH_WEST = "NORTH_WEST";
+
 //Resize canvas to screen
 function resizeCanvas() {
 
@@ -50,6 +59,8 @@ stage.addChild(line);
 
 
 const circle = new createjs.Shape();
+const CIRCLE_SPEED_X = 3;
+const CIRCLE_SPEED_Y = 3;
 circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 10);
 circle.setBounds(canvas.width/2, canvas.height/2, 10, 10);
 stage.addChild(circle);
@@ -159,11 +170,55 @@ function checkCollision(shape1, shape2) {
 
 }
 
+function midPoint(shape) {
+
+    let bounds = shape.getBounds();
+    return { 
+        x: ((shape.x + bounds.x) + (shape.x + bounds.x + bounds.width)) / 2,
+        y: ((shape.y + bounds.y) + (shape.y + bounds.y + bounds.height)) / 2
+    };
+
+}
+
+function isNumberValuePlusMinusEpsilon(number, value, epsilon) {
+
+    return number >= value - epsilon && number <= value + epsilon;
+
+}
+
+function getCollisionDirection(shape1, shape2) {
+
+    let midpointOf1 = midPoint(shape1);
+    let midpointOf2 = midPoint(shape2);
+    let epsilonX = 2;
+    let epsilonY = 5;
+
+    if (isNumberValuePlusMinusEpsilon(midpointOf1.x, midpointOf2.x, epsilonX) && midpointOf1.y < midpointOf2.y) {
+        return DIRECTION_NORTH;
+    } else if (isNumberValuePlusMinusEpsilon(midpointOf1.y, midpointOf2.y, epsilonY) && midpointOf1.x > midpointOf2.x) {
+        return DIRECTION_EAST;
+    } else if(isNumberValuePlusMinusEpsilon(midpointOf1.x, midpointOf2.x, epsilonX) && midpointOf1.y > midpointOf2.y) {
+        return DIRECTION_SOUTH;
+    } else if(isNumberValuePlusMinusEpsilon(midpointOf1.y, midpointOf2.y, epsilonY) && midpointOf1.x < midpointOf2.x) {
+        return DIRECTION_WEST;
+    } else if(midpointOf1.x > midpointOf2.x && midpointOf1.y < midpointOf2.y) {
+        return DIRECTION_NORTH_EAST;
+    } else if(midpointOf1.y > midpointOf2.y && midpointOf1.x > midpointOf2.x) {
+        return DIRECTION_SOUTH_EAST;
+    } else if (midpointOf1.y > midpointOf2.y && midpointOf1.x < midpointOf2.x) {
+        return DIRECTION_SOUTH_WEST;
+    } else if (midpointOf1.y < midpointOf2.y && midpointOf1.x < midpointOf2.x){
+        return DIRECTION_NORTH_WEST;
+    }
+
+}
+
 function animate() {
     requestAnimationFrame(animate);
     circle.x += 3;
-    if (rect2 && circle) {
-        checkCollision(rect2, circle);
+    
+    if (checkCollision(circle, rect2)) {
+        console.log(getCollisionDirection(circle, rect2));
     }
 
     //updating scores
