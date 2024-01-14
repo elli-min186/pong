@@ -61,6 +61,8 @@ stage.addChild(line);
 const circle = new createjs.Shape();
 const CIRCLE_SPEED_X = 3;
 const CIRCLE_SPEED_Y = 3;
+let circleVX = CIRCLE_SPEED_X;
+let circleVY = 0;
 circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 10);
 circle.setBounds(canvas.width/2, canvas.height/2, 10, 10);
 stage.addChild(circle);
@@ -215,10 +217,41 @@ function getCollisionDirection(shape1, shape2) {
 
 function animate() {
     requestAnimationFrame(animate);
-    circle.x += 3;
+    circle.x += circleVX;
+    circle.y += circleVY;
     
     if (checkCollision(circle, rect2)) {
-        console.log(getCollisionDirection(circle, rect2));
+        let direction = getCollisionDirection(circle, rect2);
+        switch (direction) {
+            case DIRECTION_NORTH: 
+                circleVY = -CIRCLE_SPEED_Y;
+                circleVX = 0;
+            break;
+            case DIRECTION_NORTH_EAST:
+                circleVY = -CIRCLE_SPEED_Y;
+                circleVX = CIRCLE_SPEED_X;
+            break;
+            case DIRECTION_SOUTH_EAST:
+                circleVY = CIRCLE_SPEED_Y;
+                circleVX = CIRCLE_SPEED_X;
+            break;
+            case DIRECTION_SOUTH:
+                circleVY = CIRCLE_SPEED_Y;
+                circleVX = 0;
+            break;
+            case DIRECTION_SOUTH_WEST:
+                circleVY = CIRCLE_SPEED_Y;
+                circleVX = -CIRCLE_SPEED_X;
+            break;
+            case DIRECTION_WEST:
+                circleVY = 0;
+                circleVX = -CIRCLE_SPEED_X;
+            break;
+            case DIRECTION_NORTH_WEST:
+                circleVY = -CIRCLE_SPEED_Y;
+                circleVX = -CIRCLE_SPEED_X;
+            break;
+        }
     }
 
     //updating scores
@@ -254,7 +287,6 @@ function animate() {
     }
 
     checkRectsCollisionWithBorder(); 
-    // when function is called, the screen froze
 
     stage.update();
 
