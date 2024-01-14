@@ -188,6 +188,14 @@ function isNumberValuePlusMinusEpsilon(number, value, epsilon) {
 
 }
 
+function resetCircle() {
+
+    circle.x = canvas.width/2 - circle.getBounds().x;
+    circleVX = CIRCLE_SPEED_X;
+    circleVY = 0;
+
+}
+
 function getCollisionDirection(shape1, shape2) {
 
     let midpointOf1 = midPoint(shape1);
@@ -257,17 +265,17 @@ function animate() {
     //updating scores
 
     //if circle go beyond left edge, player 2 score
-    if (circle.x <= 0) {
+    if (circle.x + circle.getBounds().x <= 0) {
         player2score++;
         score2.text = player2score;
-        circle.x = canvas.width/2;
+        resetCircle();
     }
 
     //if circle go beyond right edge, player 1 score
-    if (circle.x >= canvas.width/2) {
+    if (circle.x + circle.getBounds().x >= canvas.width) {
         player1score++;
         score1.text = player1score;
-        circle.x = 0;
+        resetCircle();
     }
 
     // rect 2
