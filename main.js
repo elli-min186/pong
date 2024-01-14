@@ -23,33 +23,6 @@ function resizeCanvas() {
 resizeCanvas(); 
 window.addEventListener("resize", resizeCanvas); //do resize every time window is resized
 
-// //background for start page
-// const background = new createjs.Shape();
-// background.graphics.beginFill("black").drawRect(0, 0, canvas.width, canvas.height);
-// stage.addChild(background);
-
-// // start button
-// const startButton = new createjs.Shape();
-// startButton.graphics.setStrokeStyle(2).beginStroke("blue").beginFill("white").drawRoundRect(canvas.width/2 - 60, canvas.height/2 - 25, 120, 50, 10);
-// stage.addChild(startButton);
-
-// const buttonText = new createjs.Text("Start", "24px Arial", "blue");
-// buttonText.textAlign = "center";
-// buttonText.x = startButton.x + 60;
-// buttonText.y = startButton.y + 15;
-// stage.addChild(buttonText);
-
-// function startGame() {
-//     stage.removeChild(startButton);
-//     stage.removeChild(buttonText);
-//     stage.removeChild(background);
-//     gameStarted = true;
-
-//     requestAnimationFrame(animate);
-// }
-
-// startButton.addEventListener("click", startGame);
-
 //Create a Shape DisplayObject
 const line = new createjs.Shape();
 line.graphics.setStrokeStyle(10).beginStroke("white");
@@ -61,7 +34,7 @@ stage.addChild(line);
 const circle = new createjs.Shape();
 const CIRCLE_SPEED_X = 3;
 const CIRCLE_SPEED_Y = 3;
-let circleVX = CIRCLE_SPEED_X;
+let circleVX = -CIRCLE_SPEED_X;
 let circleVY = 0;
 circle.graphics.beginFill("white").drawCircle(canvas.width/2, canvas.height/2, 10);
 circle.setBounds(canvas.width/2, canvas.height/2, 10, 10);
@@ -223,43 +196,56 @@ function getCollisionDirection(shape1, shape2) {
 
 }
 
+function applyCollision(circle, rect) {
+
+    let direction = getCollisionDirection(circle, rect);
+    debugger;
+    switch (direction) {
+        case DIRECTION_NORTH: 
+            circleVY = -CIRCLE_SPEED_Y;
+            circleVX = 0;
+        break;
+        case DIRECTION_NORTH_EAST:
+            circleVY = -CIRCLE_SPEED_Y;
+            circleVX = CIRCLE_SPEED_X;
+        break;
+        case DIRECTION_EAST:
+            circleVY = 0;
+            circleVX = CIRCLE_SPEED_X;
+        break;
+        case DIRECTION_SOUTH_EAST:
+            circleVY = CIRCLE_SPEED_Y;
+            circleVX = CIRCLE_SPEED_X;
+        break;
+        case DIRECTION_SOUTH:
+            circleVY = CIRCLE_SPEED_Y;
+            circleVX = 0;
+        break;
+        case DIRECTION_SOUTH_WEST:
+            circleVY = CIRCLE_SPEED_Y;
+            circleVX = -CIRCLE_SPEED_X;
+        break;
+        case DIRECTION_WEST:
+            circleVY = 0;
+            circleVX = -CIRCLE_SPEED_X;
+        break;
+        case DIRECTION_NORTH_WEST:
+            circleVY = -CIRCLE_SPEED_Y;
+            circleVX = -CIRCLE_SPEED_X;
+        break;
+    }
+
+}
+
 function animate() {
     requestAnimationFrame(animate);
     circle.x += circleVX;
     circle.y += circleVY;
     
-    if (checkCollision(circle, rect2)) {
-        let direction = getCollisionDirection(circle, rect2);
-        switch (direction) {
-            case DIRECTION_NORTH: 
-                circleVY = -CIRCLE_SPEED_Y;
-                circleVX = 0;
-            break;
-            case DIRECTION_NORTH_EAST:
-                circleVY = -CIRCLE_SPEED_Y;
-                circleVX = CIRCLE_SPEED_X;
-            break;
-            case DIRECTION_SOUTH_EAST:
-                circleVY = CIRCLE_SPEED_Y;
-                circleVX = CIRCLE_SPEED_X;
-            break;
-            case DIRECTION_SOUTH:
-                circleVY = CIRCLE_SPEED_Y;
-                circleVX = 0;
-            break;
-            case DIRECTION_SOUTH_WEST:
-                circleVY = CIRCLE_SPEED_Y;
-                circleVX = -CIRCLE_SPEED_X;
-            break;
-            case DIRECTION_WEST:
-                circleVY = 0;
-                circleVX = -CIRCLE_SPEED_X;
-            break;
-            case DIRECTION_NORTH_WEST:
-                circleVY = -CIRCLE_SPEED_Y;
-                circleVX = -CIRCLE_SPEED_X;
-            break;
-        }
+    if (checkCollision(circle, rect1)) {
+        applyCollision(circle, rect1);
+    } else if (checkCollision(circle, rect2)) {
+        applyCollision(circle, rect2);
     }
 
     //updating scores
