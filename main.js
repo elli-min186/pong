@@ -20,12 +20,18 @@ function resizeCanvas() {
 
 }
 
+/*
+    Get random int between 0 and (max - 1)
+*/
 function getRandomInt(max) {
 
     return Math.floor(Math.random() * max);
 
 }
 
+/*
+    Selects randomly between -1 and 1 so we can get a random direction vector
+*/
 function getRandomDirection() {
 
     return getRandomInt(2) === 0 ? -1 : 1;
@@ -151,11 +157,10 @@ function checkRectsCollisionWithBorder() {
 function checkCollision(shape1, shape2) {
     let hitBoxOf1 = new createjs.Shape();
     hitBoxOf1.setBounds(shape1.x + shape1.getBounds().x, shape1.y + shape1.getBounds().y, shape1.getBounds().width, shape1.getBounds().height);
-    let hitBoxOf2 = new createjs.Shape()
+    let hitBoxOf2 = new createjs.Shape();
     hitBoxOf2.setBounds(shape2.x + shape2.getBounds().x, shape2.y + shape2.getBounds().y, shape2.getBounds().width, shape2.getBounds().height);
 
     return hitBoxOf1.getBounds().intersects(hitBoxOf2.getBounds());
-
 }
 
 function checkAndApplyBorderCollision(circle) {
@@ -178,6 +183,9 @@ function midPoint(shape) {
 
 }
 
+/*
+    Checks that number is value +/- epsilon
+*/
 function isNumberValuePlusMinusEpsilon(number, value, epsilon) {
 
     return number >= value - epsilon && number <= value + epsilon;
@@ -192,6 +200,13 @@ function resetCircle() {
 
 }
 
+/**
+ * Assuming that shape1 and shape2 collided, get the direction of shape1 relative to shape2. This compares the x and y values of the midpoints of 
+ * each of the shapes to figure out the direction.
+ * @param shape1 Shape one
+ * @param shape2 Shape two
+ * @return the direction of the collision
+ */
 function getCollisionDirection(shape1, shape2) {
 
     let midpointOf1 = midPoint(shape1);
@@ -219,10 +234,15 @@ function getCollisionDirection(shape1, shape2) {
 
 }
 
+/**
+ * Assuming the circle collided with the paddle, get the direction of the collision, and update the circle's velocity appropriately.
+ * @param circle The circle
+ * @param rect The paddle
+ * @return void
+ */
 function applyCollision(circle, rect) {
 
     let direction = getCollisionDirection(circle, rect);
-    debugger;
     switch (direction) {
         case DIRECTION_NORTH: 
             circleVY = -CIRCLE_SPEED_Y;
