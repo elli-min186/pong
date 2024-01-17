@@ -73,8 +73,9 @@ let player1score = 0;
 let player2score = 0;
 
 const score1 = new createjs.Text(player1score, "50px Times New Roman", "white");
-score1.x = canvas.width/2 - 60;
+score1.x = canvas.width/2 - 30;
 score1.y = 30;
+score1.textAlign = "right";
 stage.addChild(score1);
 
 const score2 = new createjs.Text(player2score, "50px Times New Roman", "white");
@@ -281,7 +282,6 @@ function applyCollision(circle, rect) {
 }
 
 function animate() {
-    requestAnimationFrame(animate);
     circle.x += circleVX;
     circle.y += circleVY;
     
@@ -328,7 +328,16 @@ function animate() {
     checkRectsCollisionWithBorder(); 
 
     stage.update();
-
+    requestAnimationFrame(animate);
 }
 
-requestAnimationFrame(animate);
+// Add an event listener to the "Start Game" button
+const startButton = document.getElementById('button');
+startButton.addEventListener('click', startGame);
+
+function startGame() {
+    // animate();
+    requestAnimationFrame(animate);
+
+    document.getElementById('center-container').style.display = 'none';
+}

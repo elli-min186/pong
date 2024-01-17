@@ -23,15 +23,13 @@ canvas {
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  border: 2px solid #3498db;
+  border: 2px solid black;
   border-radius: 5px;
   color: #fff;
-  background-color: #3498db;
+  background-color: black;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
-
-/* Button Hover Effect */
-.button:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
+#button:hover {
+  background-color: grey;
+  border-color: grey;
 }
