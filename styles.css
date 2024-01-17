@@ -1,7 +1,15 @@
 header {
+    background-color: black;
+    color: #fff;
     text-align: center;
-    padding: 0;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+h1 {
     margin: 0;
+    font-size: 2em;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 canvas {
     display: block;
@@ -12,7 +20,7 @@ canvas {
 }
 #center-container {
     position: absolute;
-    top: 90%;
+    top: 93%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -32,4 +40,15 @@ canvas {
 #button:hover {
   background-color: grey;
   border-color: grey;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    color: grey;
+    padding: 10px;
+    text-align: right;
+}
+footer p {
+    margin: 0;
 }
